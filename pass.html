@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebApps Lab 6 - Dieringer</title>
+</head>
+
+<body>
+    <h1>Pass phrase by: Alexander Dieringer</h1>
+    <hr><br>
+
+    <h2>Getting input</h2>
+
+    <form>
+        <label for="form1_secret">Enter the secret phase</label>
+        <input type="password" id="form1_secret" name="form1_secret" placeholder="Let me in">
+
+        <label for="form1_check">Enter a phrase</label>
+        <input type="text" id="form1_check" name="form1_check">
+
+        <input type="button" onclick="processPhrase()" value="Process">
+    </form>
+
+    <br>
+
+    <div id="formResults">
+        <h2>Passphrase Results - Do the phrases match: </h2>
+        <p id="formResults_success">Successful matches: 0</p>
+        <p id="formResults_failure">Failed matches: 0</p>
+    </div>
+
+    <script>
+        var correct = 0;
+        var wrong = 0;
+
+        function processPhrase() {
+            console.log("Processing password phrases")
+            secret = document.getElementById("form1_secret")
+            check = document.getElementById("form1_check")
+
+            console.log("Debug: Secret phrase is - " + secret.value)
+            console.log("Debug: Checking phrase is - " + check.value)
+
+            resultSuccess = document.getElementById("formResults_success")
+            resultFailure = document.getElementById("formResults_failure")
+            if (secret.value == check.value) {
+                correct++
+                alert("Access allowed")
+                resultSuccess.innerHTML = ("Succesful matches: " + correct)
+                console.log("Debug: Incremented successful matches by 1, count = " + correct)
+            } else {
+                wrong++
+                alert("Access denied")
+                resultFailure.innerHTML = ("Failed matches: " + wrong)
+                console.log("Debug: Incremented failed matches by 1, count = " + wrong)
+            }
+        }
+    </script>
+
+</body>
+
+</html>
