@@ -25,14 +25,14 @@
 
         <h2>Getting input</h2>
 
-        <form>
+        <form id="passPhraseForm">
             <label for="form1_secret">Enter the secret phase</label>
             <input type="password" id="form1_secret" name="form1_secret" placeholder="Let me in">
 
             <label for="form1_check">Enter a phrase</label>
             <input type="text" id="form1_check" name="form1_check">
 
-            <input type="button" onclick="processPhrase()" value="Process">
+            <input id="passPhraseSubmit" type="button" onclick="processPhrase()" value="Process">
         </form>
 
         <br>
@@ -54,6 +54,7 @@
     <script>
         var correct = 0;
         var wrong = 0;
+        var lockCounter = 0;
 
         function processPhrase() {
             console.log("Processing password phrases")
@@ -67,14 +68,23 @@
             resultFailure = document.getElementById("formResults_failure")
             if (secret.value == check.value) {
                 correct++
+                lockCounter = 0;
                 alert("Access allowed")
                 resultSuccess.innerHTML = ("Succesful matches: " + correct)
                 console.log("Debug: Incremented successful matches by 1, count = " + correct)
             } else {
                 wrong++
+                lockCounter++;
                 alert("Access denied")
                 resultFailure.innerHTML = ("Failed matches: " + wrong)
                 console.log("Debug: Incremented failed matches by 1, count = " + wrong)
+            }
+
+            if (lockCounter >= 3) {
+                console.log("Debug: Use is locked out");
+                document.getElementById("passPhraseSubmit").onclick = function() {
+                    alert("Account is locked!");
+                }
             }
         }
 
