@@ -20,21 +20,50 @@
 
 <body>
 
-    <h2>Alexander Dieringer computes</h2>
+    <div class="container">
+        <h2>Alexander Dieringer computes</h2>
+        <br>
 
-    <form>
-        <label for="form1_base">Enter a base</label>
-        <input type="number" id="form1_base" name="form1_base" value="10"> <br>
+        <form>
+            <label for="form1_base">Enter a base</label>
+            <input type="number" id="form1_base" name="form1_base" value="10"> <br>
 
-        <label for="form1_exponent">Enter an exponent </label>
-        <input type="text" id="form1_exponent" name="form1_exponent" autofocus> <br>
+            <label for="form1_exponent">Enter an exponent </label>
+            <input type="text" id="form1_exponent" name="form1_exponent" autofocus> <br>
 
-        <input type="button" onclick="powers()" value="Calculate">
-    </form>
+            <input type="button" onclick="powers()" value="Calculate">
+        </form>
+        <br>
 
-    <div id="formResults">
-        <h2>Powers Results (Base^Exponent Series)</h2>
-        <p id="formResults_computation">Powers of base are: 0</p>
+        <div id="formResults">
+            <h2>Powers Results (Base^Exponent Series)</h2>
+            <p id="formResults_computation">Powers of base are: 0</p>
+        </div>
+        <br>
+
+        <form id="form2">
+            <label for="form2_addition">+</label>
+            <input type="radio" id="form2_addition" name="form2_calculate" value="plus" onclick="processRadio()">
+
+            <label for="form2_subtraction">-</label>
+            <input type="radio" id="form2_subtraction" name="form2_calculate" value="minus" onclick="processRadio()">
+
+            <label for="form2_multiplication">*</label>
+            <input type="radio" id="form2_multiplication" name="form2_calculate" value="times" onclick="processRadio()">
+
+            <label for="form2_division">/</label>
+            <input type="radio" id="form2_division" name="form2_calculate" value="divide" onclick="processRadio()">
+        </form>
+
+        <div id="form2Results">
+            <h2>Calculator Results</h2>
+            <p id="form2Results_container">
+                <div id="form2Results_calculation">Result: 0 </div>
+                <div id="form2Results_error">
+                    - <i id="form2Results_errorText">- Error</i>
+                </div>
+            </p>
+        </div>
     </div>
 
     <script>
@@ -44,8 +73,10 @@
             let result = "";
             computation = 0;
 
-            base = document.getElementById("form1_base").value;
-            exponent = parseInt(document.getElementById("form1_exponent").value, 10);
+            base = document.getElementById("form1_base");
+            base = (base.value.length == 0) ? 0 : base.value;
+            exponent = document.getElementById("form1_exponent");
+            exponent = (exponent.value.length == 0) ? 0 : parseInt(exponent.value, 10);
             output = document.getElementById("formResults_computation");
 
             console.log("Debug: base = " + base)
@@ -69,6 +100,63 @@
                 console.log(" - " + result);
             }
             output.innerHTML = ("Powers of base are: " + result);
+        }
+
+        function processRadio() {
+            elem_addition = document.getElementById("form2_addition");
+            elem_subtract = document.getElementById("form2_subtraction");
+            elem_multiply = document.getElementById("form2_multiplication");
+            elem_divide = document.getElementById("form2_division");
+
+            let result = "Result: 0";
+            let error = "Errors: ";
+
+            base = document.getElementById("form1_base");
+            if (base.value.length == 0 ) {
+                base = parseInt(0, 10);
+                error += "Entry for base is invalid, defaulting base to value 0. ";
+                console.log("Debug: Entry for base was invalid, assigning default value 0.");
+            } else {
+                base = parseInt(base.value, 10);
+                console.log("Debug: Value of base is - " + base);
+            }
+            
+            exponent = document.getElementById("form1_exponent");
+            if (exponent.value.length == 0 ) {
+                exponent = parseInt(0, 10);
+                error += "Entry for exponent is invalid, defaulting exponent value to 0. ";
+                console.log("Debug: Entry for exponent was invalid, assigning default value 0.");
+            } else {
+                exponent = parseInt(exponent.value, 10);
+                console.log("Debug: Value of exponent is - " + exponent);
+            }
+
+            output = document.getElementById("form2Results_calculation");
+            if(elem_addition.checked == true) {
+                console.log("Debug: Addition has been selected");
+                result = "Result of Addition: " + (base + exponent);
+            } else if (elem_subtract.checked == true) {
+                console.log("Debug: Subtraction has been selected");
+                result = "Result of Subtraction: " + (base - exponent);
+            } else if (elem_multiply.checked == true) {
+                console.log("Debug: Multiplication has been selected");
+                result = "Result of Multiplication: " + (base * exponent);
+            } else if (elem_divide.checked == true) {
+                console.log("Debug: Division has been selected");
+                if (exponent == 0) {
+                    error += "Entry for exponent is 0, divide by zero results in Infinity - please input valid exponent. ";
+                }
+                result = "Result of Division: " + (base / exponent);
+            }
+            
+            errorField = document.getElementById("form2Results_error");
+            if (error != "" && error != "Errors: ") {
+                errorField.style.display = "block";
+                document.getElementById("form2Results_errorText").innerHTML = error;
+            } else {
+                errorField.style.display = "none";
+            }
+            output.innerHTML = result;
         }
     </script>
 

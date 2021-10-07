@@ -2,3 +2,19 @@
     width: 200px;
     height: 200px;
 }
+
+#form2 label {
+    width: 12px;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+#form2 input {
+    width: 12px;
+    margin-bottom: 2px;
+}
+
+#form2Results_error {
+    display: none;
+    font-size: 10px;
+}
